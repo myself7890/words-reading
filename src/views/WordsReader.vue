@@ -1,11 +1,12 @@
 <template>
   <div class="home">
-    <div v-if="!selectedList">
+    <div>
       <h1 v-for="list in lists">
         <button @click="selectList(list)" class="btn btn-default">{{ list.name }}</button>
       </h1>
     </div>
-    <div v-else>
+    <hr />
+    <div v-if="selectedList">
       <h1 v-if="seeAnswer">{{ currentWord.word }}</h1>
       <button v-if="!currentWord" class="btn" @click="start">Commencer</button>
       <div v-else>
@@ -67,7 +68,8 @@ export default class WordsReader extends Vue {
 
   selectList(list: List) {
     this.selectedList = list;
-
+    this.currentWord = null;
+    this.playlist = [];
     _.forEach(list.words, (word) => {
       this.playlist.push(word)
     })
@@ -79,7 +81,9 @@ export default class WordsReader extends Vue {
   }
 
   replay() {
-    this.currentWord.play();
+    if (this.currentWord) {
+      this.currentWord.play();
+    }
   }
 
   next() {
